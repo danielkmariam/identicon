@@ -33,9 +33,19 @@ end
     expected_even_grid_cells = [{56, 1}, {112, 2}, {56, 3}, {190, 5}, {190, 9}, {108, 10}, {108, 14},
   {26, 16}, {12, 17}, {26, 18}, {40, 21}, {40, 23}]
 
-    %Identicon.Image{grid: grid} = Identicon.remove_odd_squares(%Identicon.Image{hex: state[:hex], color: state[:color], grid: state[:grid]})
+    %Identicon.Image{grid: grid} = Identicon.remove_odd_cells(%Identicon.Image{hex: state[:hex], color: state[:color], grid: state[:grid]})
 
     assert expected_even_grid_cells == grid
   end
 
+  test "finds left_top and right_bootom coordinates of a cell needs colouring", state do
+    grid = [{56, 1}, {112, 2}, {56, 3}, {190, 5}, {190, 9}, {108, 10}, {108, 14},{26, 16}, {12, 17}, {26, 18}, {40, 21}, {40, 23}]
+    expected = [{{50, 0}, {100, 50}}, {{100, 0}, {150, 50}}, {{150, 0}, {200, 50}}, {{250, 0}, {300, 50}}, {{450, 0}, {500, 50}},
+      {{500, 0}, {550, 50}}, {{700, 0}, {750, 50}}, {{800, 0}, {850, 50}}, {{850, 0}, {900, 50}}, {{900, 0}, {950, 50}},
+      {{1050, 0}, {1100, 50}}, {{1150, 0}, {1200, 50}}]
+
+    %Identicon.Image{coordinates: coordinates} = Identicon.build_pixel_coordinates(%Identicon.Image{hex: state[:hex], color: state[:color], grid: grid})
+
+    assert expected == coordinates
+  end
 end
