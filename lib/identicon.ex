@@ -8,4 +8,8 @@ defmodule Identicon do
     %Image{hex: hex_list}
   end
 
+  def pick_color(%Image{hex: [r, g , b | _tail]} = image) do
+    %Image{image | color: {r, g, b}}
+  end
+
 end
