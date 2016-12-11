@@ -2,6 +2,7 @@ defmodule Identicon do
 
   import Identicon.Binary
   import Identicon.Crypto
+  import Identicon.Egd
   alias Identicon.Image
 
   def generate(data) do
@@ -13,6 +14,8 @@ defmodule Identicon do
       |> build_grid
       |> remove_odd_cells
       |> build_pixel_coordinates
+      |> draw_image
+      |> save_image(data)
   end
 
   def to_image_struct(hex) do
@@ -43,13 +46,28 @@ defmodule Identicon do
 
   def build_pixel_coordinates(%Image{grid: grid} = image) do
     coordinates = Enum.map grid, fn({_code, index}) ->
-      x = rem(index, 50) * 50
-      y = div(index, 50) * 50
+      x = rem(index, 5) * 50
+      y = div(index, 5) * 50
 
       {{x, y}, {x + 50, y + 50}}
     end
 
     %Image{image | coordinates: coordinates}
+  end
+
+  def draw_image(%Image{color: color, coordinates: coordinates}) do
+    image = create_image
+    fill = fill_color(color)
+
+    Enum.each coordinates, fn({start, stop}) ->
+      filled_rectangle(image, start, stop, fill)
+    end
+
+    render_image(image)
+  end
+
+  def save_image(image, filename) do
+    File.write("#{filename}.png", image)
   end
 
   defp mirror_row([first, second | _tail] = row) do
