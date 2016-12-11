@@ -1,13 +1,6 @@
 # Identicon
 
-**TODO: **
-- Take a text and change it to hex
-- Change hex to a list
-- Create a struct to hold image data and pass it to different functions
-- Take the first three elements of the list as the colour for the image, RGB
-- build grid with each cell {value, index}
-
-
+Create identicon from given text and save the image to a file
 
 ## Installation
 
